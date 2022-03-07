@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .formata {
+            font-family: 'Courier New', monospace;
+            color: blue;
+            background-color: powderblue;
+            text-align: center;
+            margin-bottom: 15px;
+        }
+        .alerta {
+            border-radius: 6px;
+            border: 2px solid tomato;
+            background-color: coral;
+        }
+    </style>
+</head>
+<body>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+    <div id="root"></div>
+
+    <script type="text/babel">
+
+        // <div class="formata">Div criada com React</div>
+        const div1 = React.createElement('div', {
+            // O atributo HTML "class", quando usado em JavaScript ou JSX,
+            // precisa ser renomeado para "className", porque "class" é uma
+            // palavra reservada do JS.
+            className: 'formata',
+            children: 'Div criada com React'
+        })
+
+        // Criando uma div com a sintaxe JSX
+        // A sintaxe JSX será processada pelo Babel na seguinte sequência:
+        // JSX -> React -> Vanilla JS
+        const div2 = <div className="formata">Div criada com JSX</div>
+
+        const className = 'formata'
+        const children = 'Segunda div com JSX'
+        const props = {className, children} // Propriedades abreviadas
+
+        // Para usar variáveis dentro do JSX, colocamos elas entre {}
+        const div3 = <div className={className}>{children}</div>
+
+        // Quando todas as props já estão dentro de um objeto, podemos
+        // usar a sintaxe de espalhamento no JSX
+        // Obs: quando um elemento não tem "children" explícito, podemos escrevê-lo
+        // de duas formas no JSX:
+        // 1) usando tag de fechamento: <div {...props}></div>
+        // 2) usando terminador: <div {...props} />
+        const div4 = <div {...props} />
+
+        /*
+        const container = React.createElement('div', {id : 'container'}, [
+            div1,
+            div2,
+            div3,
+            div4
+        ])
+        */
+
+        // container versão JSX
+        /*const container =
+            <div id="container">
+                {div1}
+                {div2}
+                {div3}
+                {div4}
+            </div>
+        */
+
+        const container = 
+            <div id="container">
+                <div className="formata">Div criada com JSX</div>
+                <div className={className}>{children}</div>
+                <div {...props} />
+                <p className="alerta">Aviso de JSX</p>
+            </div>
+
+        ReactDOM.render(container, document.getElementById('root'))
+        
+    </script>
+</body>
+</html>
