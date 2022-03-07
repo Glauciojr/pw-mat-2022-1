@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
+    <div id="root"></div>
+
+    <script>
+        // No React, os atributos do elemento HTML são chamados PROPS
+        // e são definidas por meio de um objeto JavaScript
+        const props = {
+            style: { border: '2px solid blue', backgroundColor: 'aliceblue'},
+            id: 'divReact',
+            // Em React, a prop "children" corresponde ao "recheio" da tag,
+            // isto é, o que vai entre as tags de abertura e fechamento
+            children: 'Div criada com React'
+        }
+
+        // Usando React para criar o elemento usando as props
+        const novaDiv = React.createElement('div', props)
+
+        // Adicionando o novo elemento na div "root" usando ReactDOM
+        // ReactDOM.render(novaDiv, document.getElementById('root'))
+
+        // Definindo as props e criando o elemento ao mesmo tempo
+        const botao = React.createElement('button', {
+            id: 'novoBtn',
+            style: { color: 'red', backgroundColor: 'yellow'},
+            children: 'Clique aqui',
+            onClick: () => alert('Oi!')
+        })
+
+        // ReactDOM.render(botao, document.getElementById("root"))
+
+        // Criando um elemento de forma rápida, sem props, apenas com children
+        const parag = React.createElement('p', null, 'Isto é um parágrafo.')
+
+        // ReactDOM.render(parag, document.getElementById('root'))
+
+        // Criando um div "container" cujos "children" serão os demais
+        // elementos que devem ser exibidos
+        const container = React.createElement('div', {id: 'container'}, [
+            novaDiv,
+            botao,
+            parag
+        ])
+
+        ReactDOM.render(container, document.getElementById('root'))
+
+    </script>
+</body>
+</html>
