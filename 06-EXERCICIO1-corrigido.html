@@ -5,6 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>    
+    <style>
+        .azul {
+            color: blue;
+        }
+        .vermelho {
+            color: red;
+        }
+    </style>
+
 </head>
 <body>
     <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
@@ -38,6 +47,18 @@
             Entregar pelo Microsoft Teams até 11h10, valendo nota de participação.
         */
         
+        function Pessoa({nome, sobrenome, dia, mes, ano}) {
+            return (
+                <>
+                    <p className="azul">{nome} {sobrenome}</p>
+                    <p className="vermelho">{dia}/{mes}/{ano}</p>
+                </>
+            )
+        }
+
+        const container = <Pessoa nome="Jeremias" sobrenome="Junqueira" dia="03" mes="06" ano="1989" />
+
+        ReactDOM.render(container, document.getElementById('root'))
 
     </script>
 </body>
