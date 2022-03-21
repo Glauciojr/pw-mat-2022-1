@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>    
+</head>
+<body>
+    
+    <form>
+        <label for="campo-nome">Nome</label>
+        <input id="campo-nome"><br>
+        <div id="var"></div><br>
+        <button type="submit">Enviar</button>
+    </form>
+
+    <script>
+        let nome
+
+        function handleChange(event) {
+            // nome = document.getElementById('campo-nome').value
+            // Acesso indireto ao value do elemento que disparou
+            // o evento; event.target é o elemento que disparou o
+            // evento
+            nome = event.target.value
+            document.getElementById('var').innerText = nome
+        }
+
+        function handleSubmit(event) {
+            event.preventDefault()      // Evita recarregamento da página
+            alert(`Olá, ${nome}!`)
+        }
+
+        document.getElementById('campo-nome').addEventListener('keyup', handleChange)
+        document.querySelector('form').addEventListener('submit', handleSubmit)
+
+    </script>
+</body>
+</html>
