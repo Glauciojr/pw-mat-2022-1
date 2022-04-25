@@ -11,6 +11,8 @@ import {PokemonForm} from '../pokemon'
 function PokemonInfo({pokemonName}) {
   // 🐨 crie o estado para o pokémon (null)
   const [pokemon, setPokemon] = React.useState(null)
+  const [error, setError] = React.useState(null)
+  const [status, setStatus] = React.useState('idle')
 
   // 🐨 crie React.useEffect de modo a ser chamado sempre que pokemonName mudar.
   // 💰 NÃO SE ESQUEÇA DO VETOR DE DEPENDÊNCIAS!
@@ -22,6 +24,8 @@ function PokemonInfo({pokemonName}) {
     // 🐨 antes de chamar `fetchPokemon`, limpe o estado atual do pokemon
     // ajustando-o para null.
     setPokemon(null)
+    setError(null)
+    setStatus('idle')
 
     // (Isso é para habilitar o estado de carregamento ao alternar entre diferentes
     // pokémon.)
@@ -34,19 +38,64 @@ function PokemonInfo({pokemonName}) {
     //   1. não há pokemonName: 'Informe um pokémon'
     //   2. tem pokemonName mas não pokemon: <PokemonInfoFallback name={pokemonName} />
     //   3. tem pokemon: <PokemonDataView pokemon={pokemon} />
-    fetchPokemon(pokemonName).then(
+
+    dispatchApi(pokemonName)
+
+  }, [pokemonName])
+
+  async function dispatchApi(pokemonName) {
+    /*fetchPokemon(pokemonName).then(
       // Requisição retornou OK
       pokemonData => setPokemon(pokemonData)
     )
     .catch(
-      erro => alert(erro)
-    )
-
-  }, [pokemonName])
+      erro => console.error(erro)
+    )*/
+    try {
+      // Chamada propriamente dita à API, que tem potencial
+      // de demora na execução
+      setStatus('pending')
+      const pokemonData = await fetchPokemon(pokemonName)
+      setPokemon(pokemonData)
+      setStatus('resolved')
+    }
+    catch(erro) {
+      //console.error(erro)
+      setError(erro)
+      setStatus('rejected')
+    }
+  }
   
-  if(! pokemonName) return 'Informe um pokémon'
+  /*if(! pokemonName) return 'Informe um pokémon'
+  else if(error) return (
+    <div role="alert">
+        Um erro ocorreu: <pre style={{whiteSpace: 'normal'}}>
+          {error.message}
+        </pre>
+      </div>
+  )
   else if(! pokemon)  return <PokemonInfoFallback name={pokemonName} />
-  else return <PokemonDataView pokemon={pokemon} />
+  else return <PokemonDataView pokemon={pokemon} />*/
+
+  switch(status) {
+    case 'idle':
+      return 'Informe um pokémon'
+
+    case 'pending':
+      return <PokemonInfoFallback name={pokemonName} />
+
+    case 'resolved':
+      return <PokemonDataView pokemon={pokemon} />
+
+    default: // 'rejected'
+      return (
+        <div role="alert">
+            Um erro ocorreu: <pre style={{whiteSpace: 'normal'}}>
+              {error.message}
+            </pre>
+          </div>
+      )
+  }
   
 }
 
@@ -58,13 +107,15 @@ function App() {
   }
 
   return (
-    <div className="pokemon-info-app">
-      <PokemonForm pokemonName={pokemonName} onSubmit={handleSubmit} />
-      <hr />
-      <div className="pokemon-info">
-        <PokemonInfo pokemonName={pokemonName} />
-      </div>
-    </div>
+    <>
+      <div className="pokemon-info-app">
+        <PokemonForm pokemonName={pokemonName} onSubmit={handleSubmit} />
+        <hr />
+        <div className="pokemon-info">
+          <PokemonInfo pokemonName={pokemonName} />
+        </div>
+      </div>      
+    </>
   )
 }
 
