@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+
+    class FormImc extends React.Component {
+
+      /* No constructor(), são inicializadas as variáveis de estado,
+         assim como é feito com useState() em componentes funcionais */
+      constructor(props) {
+        super(props)
+        this.state = {
+          peso: 0,
+          altura: 0,
+          imc: 0
+        }
+
+        /* É necessario fazer o "bind" para que os manipuladores de eventos
+           possam usar o "this" da classe */
+        this.handleChange1 = this.handleChange1.bind(this)
+        this.handleChange2 = this.handleChange2.bind(this)
+      }
+
+      /* Este é o método equivalente ao useEffect() */
+      componentDidUpdate(prevProps, prevState) {
+
+        let novoImc = isNaN(this.state.peso) || isNaN(this.state.altura) ? '' : this.state.peso / this.state.altura ** 2
+
+        console.log(novoImc)
+
+        /* Para evitar atualizações desnecessárias e em grande número, é
+           necessário verificar se o valor realmente sofreu alterações */
+        if(prevState.imc !== novoImc) this.setState({imc: novoImc})
+        
+      }
+
+      /* Manipulares de eventos dos inputs, transformados em funções no
+         formato "clássico" para funcionarem dentro de uma classe */
+      handleChange1(event) {
+        this.setState({peso: Number(event.target.value)})
+      }
+
+      handleChange2(event) {
+        this.setState({altura: Number(event.target.value)})
+      }
+          
+      render() {
+        return (
+            <form>
+                <div>
+                    <label htmlFor="peso">Peso (kg):</label><br />
+                    <input id="peso" type="number" value={this.state.peso} onChange={this.handleChange1} />
+                </div>
+                <div>
+                    <label htmlFor="altura">Altura (m):</label><br />
+                    <input id="altura" type="number" value={this.state.altura} onChange={this.handleChange2} />
+                </div>
+                <div>IMC: {this.state.imc}</div>
+            </form>
+        )
+      }
+
+    }
+
+    ReactDOM.render(<FormImc />, document.getElementById('root'))
+
+  </script>
+
+</body>
+</html>

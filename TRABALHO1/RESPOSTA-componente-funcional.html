@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cálculo de IMC</title>
+</head>
+<body>
+  
+  <div id="root"></div>
+
+  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+  <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+
+  <script type="text/babel">
+
+    const FormImc = () => {
+
+        const [state, setState] = React.useState({
+          peso: 0,
+          altura: 0,
+          imc: ''
+        })
+        const { peso, altura, imc } = state
+
+        React.useEffect(() => {
+            if(isNaN(peso) || isNaN(altura)) setState({...state, imc: ''})
+            else setState({...state, imc: peso / altura ** 2})
+        }, [peso, altura])
+
+        const handleChange = event => {
+          const field = event.target.id
+          setState({...state, [field]: event.target.value})
+        }
+                
+        return (
+            <form>
+                <h1>Cálculo de IMC</h1>
+                <div>
+                    <label htmlFor="peso">Peso (kg):</label><br />
+                    <input id="peso" type="number" value={peso} onChange={handleChange} />
+                </div>
+                <div>
+                    <label htmlFor="altura">Altura (m):</label><br />
+                    <input id="altura" type="number" value={altura} onChange={handleChange} />
+                </div>
+                <div>IMC: {imc}</div>
+            </form>
+        )
+
+    }
+
+    ReactDOM.render(<FormImc />, document.getElementById('root'))
+
+  </script>
+
+</body>
+</html>
